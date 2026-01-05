@@ -1,0 +1,338 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html dir="rtl" lang="he">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>הדפסת פלייר</title>
+    <style type="text/css">
+      html { font-family:Calibri, Arial, Helvetica, sans-serif; font-size:11pt; background-color:white; direction:rtl }
+      body { direction:rtl }
+      table { direction:rtl }
+      a.comment-indicator:hover + div.comment { background:#ffd; position:absolute; display:block; border:1px solid black; padding:0.5em }
+      a.comment-indicator { background:red; display:inline-block; border:1px solid black; width:0.5em; height:0.5em }
+      div.comment { display:none }
+      table { border-collapse:collapse; page-break-after:always }
+      .gridlines td { border:none }
+      .gridlines th { border:none }
+      .b { text-align:center }
+      .e { text-align:center }
+      .f { text-align:right }
+      .inlineStr { text-align:left }
+      .n { text-align:right }
+      .s { text-align:left }
+      td.style0 { vertical-align:bottom; border-bottom:none #000000; border-top:none #000000; border-left:none #000000; border-right:none #000000; color:#000000; font-family:'Calibri'; font-size:11pt; background-color:white }
+      th.style0 { vertical-align:bottom; border-bottom:none #000000; border-top:none #000000; border-left:none #000000; border-right:none #000000; color:#000000; font-family:'Calibri'; font-size:11pt; background-color:white }
+      td.style1 { vertical-align:bottom; text-align:center; border-bottom:none #000000; border-top:none #000000; border-left:none #000000; border-right:none #000000; color:#000000; font-family:'Calibri'; font-size:11pt; background-color:white }
+      th.style1 { vertical-align:bottom; text-align:center; border-bottom:none #000000; border-top:none #000000; border-left:none #000000; border-right:none #000000; color:#000000; font-family:'Calibri'; font-size:11pt; background-color:white }
+      td.style2 { vertical-align:top; text-align:right; padding-right:0px; border-bottom:none #000000; border-top:none #000000; border-left:none #000000; border-right:none #000000; color:#000000; font-family:'David'; font-size:48pt; background-color:white }
+      th.style2 { vertical-align:top; text-align:right; padding-right:0px; border-bottom:none #000000; border-top:none #000000; border-left:none #000000; border-right:none #000000; color:#000000; font-family:'David'; font-size:48pt; background-color:white }
+      td.style3 { vertical-align:middle; text-align:center; border-bottom:none #000000; border-top:none #000000; border-left:none #000000; border-right:none #000000; color:#000000; font-family:'David'; font-size:26pt; background-color:white }
+      th.style3 { vertical-align:middle; text-align:center; border-bottom:none #000000; border-top:none #000000; border-left:none #000000; border-right:none #000000; color:#000000; font-family:'David'; font-size:26pt; background-color:white }
+      td.style4 { vertical-align:middle; text-align:right; padding-right:0px; border-bottom:none #000000; border-top:none #000000; border-left:none #000000; border-right:none #000000; color:#000000; font-family:'David'; font-size:26pt; background-color:white }
+      th.style4 { vertical-align:middle; text-align:right; padding-right:0px; border-bottom:none #000000; border-top:none #000000; border-left:none #000000; border-right:none #000000; color:#000000; font-family:'David'; font-size:26pt; background-color:white }
+      td.style5 { vertical-align:middle; text-align:center; border-bottom:none #000000; border-top:none #000000; border-left:none #000000; border-right:none #000000; font-weight:bold; color:#000000; font-family:'David'; font-size:42pt; background-color:white }
+      th.style5 { vertical-align:middle; text-align:center; border-bottom:none #000000; border-top:none #000000; border-left:none #000000; border-right:none #000000; font-weight:bold; color:#000000; font-family:'David'; font-size:42pt; background-color:white }
+      td.style6 { vertical-align:top; text-align:center; border-bottom:none #000000; border-top:none #000000; border-left:none #000000; border-right:none #000000; color:#000000; font-family:'David'; font-size:28pt; background-color:white }
+      th.style6 { vertical-align:top; text-align:center; border-bottom:none #000000; border-top:none #000000; border-left:none #000000; border-right:none #000000; color:#000000; font-family:'David'; font-size:28pt; background-color:white }
+      td.style7 { vertical-align:middle; text-align:center; border-bottom:none #000000; border-top:none #000000; border-left:none #000000; border-right:none #000000; font-weight:bold; color:#000000; font-family:'David'; font-size:28pt; background-color:white }
+      th.style7 { vertical-align:middle; text-align:center; border-bottom:none #000000; border-top:none #000000; border-left:none #000000; border-right:none #000000; font-weight:bold; color:#000000; font-family:'David'; font-size:28pt; background-color:white }
+      td.style8 { vertical-align:middle; text-align:center; border-bottom:none #000000; border-top:none #000000; border-left:none #000000; border-right:none #000000; color:#000000; font-family:'David'; font-size:24pt; background-color:white }
+      th.style8 { vertical-align:middle; text-align:center; border-bottom:none #000000; border-top:none #000000; border-left:none #000000; border-right:none #000000; color:#000000; font-family:'David'; font-size:24pt; background-color:white }
+      td.style9 { vertical-align:top; text-align:right; padding-right:0px; border-bottom:none #000000; border-top:none #000000; border-left:none #000000; border-right:none #000000; color:#000000; font-family:'David'; font-size:22pt; background-color:white }
+      th.style9 { vertical-align:top; text-align:right; padding-right:0px; border-bottom:none #000000; border-top:none #000000; border-left:none #000000; border-right:none #000000; color:#000000; font-family:'David'; font-size:22pt; background-color:white }
+      td.style10 { vertical-align:top; text-align:right; padding-right:0px; border-bottom:none #000000; border-top:none #000000; border-left:none #000000; border-right:none #000000; color:#000000; font-family:'David'; font-size:28pt; background-color:white }
+      th.style10 { vertical-align:top; text-align:right; padding-right:0px; border-bottom:none #000000; border-top:none #000000; border-left:none #000000; border-right:none #000000; color:#000000; font-family:'David'; font-size:28pt; background-color:white }
+      td.style11 { vertical-align:middle; text-align:center; border-bottom:none #000000; border-top:none #000000; border-left:none #000000; border-right:none #000000; font-weight:bold; color:#000000; font-family:'David'; font-size:75pt; background-color:white }
+      th.style11 { vertical-align:middle; text-align:center; border-bottom:none #000000; border-top:none #000000; border-left:none #000000; border-right:none #000000; font-weight:bold; color:#000000; font-family:'David'; font-size:75pt; background-color:white }
+      td.style12 { vertical-align:middle; text-align:center; border-bottom:none #000000; border-top:none #000000; border-left:none #000000; border-right:none #000000; font-weight:bold; color:#000000; font-family:'David'; font-size:28pt; background-color:white }
+      th.style12 { vertical-align:middle; text-align:center; border-bottom:none #000000; border-top:none #000000; border-left:none #000000; border-right:none #000000; font-weight:bold; color:#000000; font-family:'David'; font-size:28pt; background-color:white }
+      td.style13 { vertical-align:top; text-align:right; padding-right:0px; border-bottom:none #000000; border-top:none #000000; border-left:none #000000; border-right:none #000000; font-weight:bold; color:#000000; font-family:'David'; font-size:28pt; background-color:white }
+      th.style13 { vertical-align:top; text-align:right; padding-right:0px; border-bottom:none #000000; border-top:none #000000; border-left:none #000000; border-right:none #000000; font-weight:bold; color:#000000; font-family:'David'; font-size:28pt; background-color:white }
+      td.style14 { vertical-align:middle; text-align:center; border-bottom:none #000000; border-top:none #000000; border-left:none #000000; border-right:none #000000; color:#000000; font-family:'David'; font-size:26pt; background-color:white }
+      th.style14 { vertical-align:middle; text-align:center; border-bottom:none #000000; border-top:none #000000; border-left:none #000000; border-right:none #000000; color:#000000; font-family:'David'; font-size:26pt; background-color:white }
+      table.sheet0 col.col0 { width:42pt }
+      table.sheet0 col.col1 { width:129.45555407pt }
+      table.sheet0 col.col2 { width:82.68888794pt }
+      table.sheet0 col.col3 { width:136.23333177pt }
+      table.sheet0 col.col4 { width:437.16666165pt }
+      table.sheet0 col.col5 { width:42pt }
+      table.sheet0 col.col6 { width:42pt }
+      table.sheet0 col.col7 { width:42pt }
+      table.sheet0 tr { height:12pt }
+      table.sheet0 tr.row0 { height:45pt }
+      table.sheet0 tr.row1 { height:90pt }
+      table.sheet0 tr.row2 { height:45pt }
+      table.sheet0 tr.row3 { height:38pt }
+      table.sheet0 tr.row4 { height:70pt }
+      table.sheet0 tr.row5 { height:45pt }
+      table.sheet0 tr.row6 { height:35pt }
+      table.sheet0 tr.row7 { height:35pt }
+      table.sheet0 tr.row8 { height:55pt }
+      table.sheet0 tr.row9 { height:63pt }
+      table.sheet0 tr.row10 { height:58pt }
+      table.sheet0 tr.row11 { height:90pt }
+      table.sheet0 tr.row12 { height:45pt }
+      table.sheet0 tr.row13 { height:38pt }
+      table.sheet0 tr.row14 { height:70pt }
+      table.sheet0 tr.row15 { height:45pt }
+      table.sheet0 tr.row16 { height:35pt }
+      table.sheet0 tr.row17 { height:35pt }
+      table.sheet0 tr.row18 { height:55pt }
+      table.sheet0 tr.row19 { height:63pt }
+      table.sheet0 tr.row20 { height:58pt }
+      
+      /* Page break control - 2 flyers per page */
+      table.sheet0 { page-break-after: always; }
+      
+      /* Screen controls */
+      .controls {
+            background: white;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .controls button {
+            padding: 12px 30px;
+            font-size: 18px;
+            margin: 0 10px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s;
+        }
+
+        .btn-print {
+            background: #4CAF50;
+            color: white;
+        }
+
+        .btn-print:hover {
+            background: #45a049;
+        }
+
+        .btn-back {
+            background: #2196F3;
+            color: white;
+        }
+
+        .btn-back:hover {
+            background: #0b7dda;
+        }
+        
+        @media print {
+            .controls {
+                display: none;
+            }
+        }
+    </style>
+</head>
+
+<body>
+<style>
+@page { margin-left: 0in; margin-right: 0in; margin-top: 0in; margin-bottom: 0in; }
+body { margin-left: 0in; margin-right: 0in; margin-top: 0in; margin-bottom: 0in; }
+</style>
+
+<div class="controls">
+    <button class="btn-print" onclick="saveToPDF()">💾 שמור כ-PDF</button>
+    <button class="btn-print" onclick="window.print()">🖨️ הדפס</button>
+    <button class="btn-back" onclick="goBack()">← חזור</button>
+    <span id="counter" style="margin-right: 20px; font-size: 18px; font-weight: bold;"></span>
+</div>
+
+<div id="content"></div>
+
+<script>
+    window.onload = function() {
+        const selectedData = JSON.parse(localStorage.getItem('selectedForPrint') || '[]');
+        
+        if (selectedData.length === 0) {
+            document.getElementById('content').innerHTML = '<div style="text-align:center;padding:50px;font-size:18px;">אין נתונים להדפסה</div>';
+            return;
+        }
+
+        document.getElementById('counter').textContent = `${selectedData.length} מוסדות`;
+
+        // Group institutes 2 per page
+        const pages = [];
+        for (let i = 0; i < selectedData.length; i += 2) {
+            pages.push(selectedData.slice(i, i + 2));
+        }
+
+        // Generate HTML for each page
+        let html = '';
+        pages.forEach((pageData) => {
+            html += generatePage(pageData);
+        });
+
+        document.getElementById('content').innerHTML = html;
+    };
+
+    function generatePage(institutes) {
+        // One table = one A4 page with 2 flyers (like desktop app)
+        let html = '<table border="0" cellpadding="0" cellspacing="0" class="sheet0 gridlines">';
+        html += '<col class="col0"><col class="col1"><col class="col2"><col class="col3"><col class="col4"><col class="col5"><col class="col6"><col class="col7">';
+        html += '<tbody>';
+        
+        // First flyer (always exists)
+        if (institutes[0]) {
+            html += generateFlyerRows(institutes[0]);
+        }
+        
+        // Second flyer (if exists - for odd numbers, last page has only 1)
+        if (institutes[1]) {
+            html += generateFlyerRows(institutes[1]);
+        }
+        
+        html += '</tbody></table>';
+        return html;
+    }
+
+    function generateFlyerRows(inst) {
+        return `
+          <tr class="row0">
+            <td class="column0">&nbsp;</td>
+            <td class="column1 style0 f">&nbsp;</td>
+            <td class="column2">&nbsp;</td>
+            <td class="column3">&nbsp;</td>
+            <td class="column4">&nbsp;</td>
+            <td class="column5">&nbsp;</td>
+            <td class="column6">&nbsp;</td>
+            <td class="column7 style1 null"></td>
+          </tr>
+          <tr class="row1">
+            <td class="column0">&nbsp;</td>
+            <td class="column1 style2 s style2" colspan="4">&nbsp;<span style="font-weight:bold; color:#C00000; font-family:'David'; font-size:48pt">קייטרינג:</span><span style="font-weight:bold; color:#002060; font-family:'David'; font-size:48pt">&quot;ישיבת מאיר בת עין&quot;    </span><span style="font-weight:bold; color:#000000; font-family:'David'; font-size:48pt">טבריה</span></td>
+            <td class="column5">&nbsp;</td>
+            <td class="column6">&nbsp;</td>
+            <td class="column7">&nbsp;</td>
+          </tr>
+          <tr class="row2">
+            <td class="column0">&nbsp;</td>
+            <td class="column1 style3 s">סמל מוסד:</td>
+            <td class="column2 style3 n">${inst.inst_id || ''}</td>
+            <td class="column3 style3 s">טל מוקד:</td>
+            <td class="column4 style3 s"></td>
+            <td class="column5">&nbsp;</td>
+            <td class="column6">&nbsp;</td>
+            <td class="column7">&nbsp;</td>
+          </tr>
+          <tr class="row3">
+            <td class="column0">&nbsp;</td>
+            <td class="column1 style3 s">כתובת:</td>
+            <td class="column2 style3 s">${inst.address || ''}</td>
+            <td class="column3 style3 s">קבוצת גיל:</td>
+            <td class="column4 style4 s">${inst.age_group || ''}</td>
+            <td class="column5">&nbsp;</td>
+            <td class="column6">&nbsp;</td>
+            <td class="column7">&nbsp;</td>
+          </tr>
+          <tr class="row4">
+            <td class="column0">&nbsp;</td>
+            <td class="column1 style3 s">שם מוסד:</td>
+            <td class="column2 style5 s style5" colspan="2">${inst.name || ''}</td>
+            <td class="column4 style6 null style6" rowspan="2"></td>
+            <td class="column5">&nbsp;</td>
+            <td class="column6">&nbsp;</td>
+            <td class="column7">&nbsp;</td>
+          </tr>
+          <tr class="row5">
+            <td class="column0">&nbsp;</td>
+            <td class="column1 style3 s">סוג:</td>
+            <td class="column2 style7 s style7" colspan="2">${inst.serving_type || ''}</td>
+            <td class="column5">&nbsp;</td>
+            <td class="column6">&nbsp;</td>
+            <td class="column7">&nbsp;</td>
+          </tr>
+          <tr class="row6">
+            <td class="column0">&nbsp;</td>
+            <td class="column1 style3 s">אלרגני:</td>
+            <td class="column2 style8 s">${inst.allergens || ''}</td>
+            <td class="column3 style9 null"></td>
+            <td class="column4 style10 null"></td>
+            <td class="column5">&nbsp;</td>
+            <td class="column6">&nbsp;</td>
+            <td class="column7">&nbsp;</td>
+          </tr>
+          <tr class="row7">
+            <td class="column0">&nbsp;</td>
+            <td class="column1 style3 s">כמות מנות:</td>
+            <td class="column2 style9 null"></td>
+            <td class="column3 style9 null"></td>
+            <td class="column4 style10 null"></td>
+            <td class="column5">&nbsp;</td>
+            <td class="column6">&nbsp;</td>
+            <td class="column7">&nbsp;</td>
+          </tr>
+          <tr class="row8">
+            <td class="column0">&nbsp;</td>
+            <td class="column1 style11 s style11" rowspan="2">${inst.quantity || ''}</td>
+            <td class="column2 style12 s style12" colspan="2">${inst.dish1 || ''}</td>
+            <td class="column4 style13 null"></td>
+            <td class="column5">&nbsp;</td>
+            <td class="column6">&nbsp;</td>
+            <td class="column7">&nbsp;</td>
+          </tr>
+          <tr class="row9">
+            <td class="column0">&nbsp;</td>
+            <td class="column2 style12 s style12" colspan="2">${inst.dish2 || ''}</td>
+            <td class="column4 style13 null"></td>
+            <td class="column5">&nbsp;</td>
+            <td class="column6">&nbsp;</td>
+            <td class="column7">&nbsp;</td>
+          </tr>
+          <tr class="row10">
+            <td class="column0">&nbsp;</td>
+            <td class="column1 style14 s">${inst.date || ''}</td>
+            <td class="column2 style12 s style12" colspan="2">${inst.dish3 || ''}</td>
+            <td class="column4 style13 null"></td>
+            <td class="column5">&nbsp;</td>
+            <td class="column6">&nbsp;</td>
+            <td class="column7">&nbsp;</td>
+          </tr>
+        `;
+    }
+
+    function saveToPDF() {
+        // Generate filename with date
+        const now = new Date();
+        const dateStr = now.toISOString().split('T')[0]; // YYYY-MM-DD
+        const filename = `flyers_${dateStr}.pdf`;
+        
+        // Trigger browser's print dialog with PDF as default
+        // User will need to select "Save as PDF" or "Microsoft Print to PDF"
+        const printWindow = window.open('', '_blank');
+        if (printWindow) {
+            printWindow.document.write(document.documentElement.outerHTML);
+            printWindow.document.close();
+            setTimeout(() => {
+                printWindow.print();
+            }, 500);
+        } else {
+            // If popup blocked, use current window
+            window.print();
+        }
+    }
+
+    function goBack() {
+        // Try to close the window if opened as popup
+        if (window.opener) {
+            window.close();
+        } else {
+            // Otherwise navigate back or to main page
+            if (document.referrer) {
+                window.history.back();
+            } else {
+                window.location.href = 'manage_institutes.html';
+            }
+        }
+    }
+</script>
+
+</body>
+</html>

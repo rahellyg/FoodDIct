@@ -1,0 +1,669 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>מערכת ניהול מוסדות</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 20px;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            font-size: 1.1em;
+            opacity: 0.9;
+        }
+
+        .content {
+            padding: 30px;
+        }
+
+        /* Form Styling */
+        .form-section {
+            background: #f8f9fa;
+            padding: 25px;
+            border-radius: 10px;
+            margin-bottom: 25px;
+            border: 2px solid #e9ecef;
+        }
+
+        .form-section h2 {
+            color: #667eea;
+            margin-bottom: 20px;
+            font-size: 1.5em;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-group label {
+            font-weight: bold;
+            margin-bottom: 5px;
+            color: #495057;
+        }
+
+        .form-group input {
+            padding: 10px;
+            border: 2px solid #dee2e6;
+            border-radius: 5px;
+            font-size: 14px;
+            transition: border-color 0.3s;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .form-group input.required {
+            border-color: #764ba2;
+        }
+
+        /* Buttons */
+        .button-group {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin: 20px 0;
+        }
+
+        button {
+            padding: 12px 25px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+        }
+
+        button:active {
+            transform: translateY(0);
+        }
+
+        .btn-add { background: #4CAF50; color: white; }
+        .btn-update { background: #f44336; color: white; }
+        .btn-load { background: #e014c5; color: white; }
+        .btn-export { background: #38422E; color: white; }
+        .btn-refresh { background: #5d3975; color: white; }
+        .btn-import { background: #2196F3; color: white; }
+        .btn-clear { background: #FF9800; color: white; }
+        .btn-select-all { background: #9C27B0; color: white; }
+
+        /* Table */
+        .table-container {
+            overflow-x: auto;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+        }
+
+        th {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 15px;
+            text-align: center;
+            font-weight: bold;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        td {
+            padding: 12px;
+            border-bottom: 1px solid #dee2e6;
+            text-align: center;
+        }
+
+        tr:hover {
+            background: #f8f9fa;
+        }
+
+        tr.selected {
+            background: #e3f2fd !important;
+        }
+
+        .checkbox-cell {
+            cursor: pointer;
+            font-size: 24px;
+            user-select: none;
+        }
+
+        /* Status Messages */
+        .status-message {
+            padding: 15px;
+            border-radius: 8px;
+            margin: 20px 0;
+            font-weight: bold;
+            text-align: center;
+            display: none;
+        }
+
+        .status-success {
+            background: #d4edda;
+            color: #155724;
+            border: 2px solid #c3e6cb;
+        }
+
+        .status-error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 2px solid #f5c6cb;
+        }
+
+        .status-info {
+            background: #d1ecf1;
+            color: #0c5460;
+            border: 2px solid #bee5eb;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .button-group {
+                flex-direction: column;
+            }
+            
+            button {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>מערכת ניהול מוסדות</h1>
+            <p>ניהול מוסדות, ייצוא והדפסת פלייר</p>
+        </div>
+
+        <div class="content">
+            <!-- Quick Guide -->
+            <div id="quickGuide" style="background: linear-gradient(135deg, #fff3cd 0%, #ffe69c 100%); padding: 20px; border-radius: 10px; margin-bottom: 20px; border: 2px solid #ffc107; display: none;">
+                <h3 style="color: #856404; margin-bottom: 10px;">📋 התחלה מהירה</h3>
+                <p style="color: #856404; line-height: 1.8; margin: 0;">
+                    <strong>1.</strong> לחץ על כפתור <strong>"טען קובץ Excel"</strong> למטה<br>
+                    <strong>2.</strong> בחר את הקובץ <strong>institutes.xlsx</strong><br>
+                    <strong>3.</strong> הנתונים יטענו אוטומטית!
+                </p>
+            </div>
+
+            <!-- Status Messages -->
+            <div id="statusMessage" class="status-message"></div>
+
+            <!-- Form Section -->
+            <div class="form-section">
+                <h2>פרטי מוסד</h2>
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="inst_id">סמל מוסד *</label>
+                        <input type="text" id="inst_id" class="required">
+                    </div>
+                    <div class="form-group">
+                        <label for="name">שם המוסד *</label>
+                        <input type="text" id="name" class="required">
+                    </div>
+                    <div class="form-group">
+                        <label for="address">כתובת</label>
+                        <input type="text" id="address">
+                    </div>
+                    <div class="form-group">
+                        <label for="age_group">קבוצת גיל</label>
+                        <input type="text" id="age_group">
+                    </div>
+                    <div class="form-group">
+                        <label for="serving_type">סוג הגשה</label>
+                        <input type="text" id="serving_type">
+                    </div>
+                    <div class="form-group">
+                        <label for="allergens">אלרגני</label>
+                        <input type="text" id="allergens">
+                    </div>
+                    <div class="form-group">
+                        <label for="notes">הערות</label>
+                        <input type="text" id="notes">
+                    </div>
+                    <div class="form-group">
+                        <label for="base_quantity">כמות בסיס</label>
+                        <input type="text" id="base_quantity">
+                    </div>
+                    <div class="form-group">
+                        <label for="quantity">כמות</label>
+                        <input type="text" id="quantity">
+                    </div>
+                    <div class="form-group">
+                        <label for="date">תאריך</label>
+                        <input type="date" id="date">
+                    </div>
+                    <div class="form-group">
+                        <label for="dish1">מנה 1</label>
+                        <input type="text" id="dish1">
+                    </div>
+                    <div class="form-group">
+                        <label for="dish2">מנה 2</label>
+                        <input type="text" id="dish2">
+                    </div>
+                    <div class="form-group">
+                        <label for="dish3">מנה 3</label>
+                        <input type="text" id="dish3">
+                    </div>
+                </div>
+
+                <div class="button-group">
+                    <button class="btn-add" onclick="addInstitute()">הוסף מוסד</button>
+                    <button class="btn-update" onclick="updateInstitute()">עדכן נבחר</button>
+                    <button class="btn-load" onclick="loadSelected()">טען שורה</button>
+                    <button class="btn-clear" onclick="clearForm()">נקה טופס</button>
+                </div>
+            </div>
+
+            <!-- Actions -->
+            <div class="button-group">
+                <input type="file" id="fileInput" accept=".xlsx,.xls" onchange="loadExcelFile(event)" style="display: none;">
+                <button class="btn-import" onclick="document.getElementById('fileInput').click()">טען קובץ Excel</button>
+                <button class="btn-export" onclick="exportToExcel()">שמור ל-Excel</button>
+                <button class="btn-select-all" onclick="toggleSelectAll()">בחר הכל</button>
+                <button class="btn-export" onclick="exportSelectedToHTML()">ייצוא נבחרים להדפסה</button>
+                <button class="btn-refresh" onclick="refreshTable()">רענן טבלה</button>
+            </div>
+
+            <!-- Table -->
+            <div class="table-container">
+                <table id="dataTable">
+                    <thead>
+                        <tr>
+                            <th>בחר</th>
+                            <th>סמל מוסד</th>
+                            <th>שם המוסד</th>
+                            <th>כתובת</th>
+                            <th>קבוצת גיל</th>
+                            <th>סוג הגשה</th>
+                            <th>אלרגני</th>
+                            <th>הערות</th>
+                            <th>כמות בסיס</th>
+                            <th>כמות</th>
+                            <th>תאריך</th>
+                            <th>מנה 1</th>
+                            <th>מנה 2</th>
+                            <th>מנה 3</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tableBody">
+                        <!-- Rows will be inserted here -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Global data storage
+        let institutesData = [];
+        let selectedRow = null;
+        let allSelected = false;
+
+        // Initialize on page load
+        window.onload = function() {
+            loadFromLocalStorage();
+            setTodayDate();
+            
+            if (institutesData.length === 0) {
+                document.getElementById('quickGuide').style.display = 'block';
+                showMessage('לחץ על "טען קובץ Excel" כדי לטעון את הנתונים שלך', 'info');
+            } else {
+                showMessage(`נטענו ${institutesData.length} מוסדות מהזיכרון`, 'success');
+            }
+        };
+
+        // Set today's date as default
+        function setTodayDate() {
+            const today = new Date().toISOString().split('T')[0];
+            document.getElementById('date').value = today;
+        }
+
+        // Show status message
+        function showMessage(message, type) {
+            const msgDiv = document.getElementById('statusMessage');
+            msgDiv.textContent = message;
+            msgDiv.className = `status-message status-${type}`;
+            msgDiv.style.display = 'block';
+            setTimeout(() => {
+                msgDiv.style.display = 'none';
+            }, 3000);
+        }
+
+        // Clear form
+        function clearForm() {
+            const fields = ['inst_id', 'name', 'address', 'age_group', 'serving_type', 
+                          'allergens', 'notes', 'base_quantity', 'quantity', 'date',
+                          'dish1', 'dish2', 'dish3'];
+            fields.forEach(field => {
+                document.getElementById(field).value = '';
+            });
+            selectedRow = null;
+            document.querySelectorAll('tr.selected').forEach(tr => tr.classList.remove('selected'));
+            setTodayDate();
+            showMessage('טופס נוקה', 'info');
+        }
+
+        // Collect form data
+        function collectFormData() {
+            const inst_id = document.getElementById('inst_id').value.trim();
+            const name = document.getElementById('name').value.trim();
+
+            if (!inst_id || !name) {
+                showMessage('סמל מוסד ושם מוסד הינם שדות חובה', 'error');
+                return null;
+            }
+
+            return {
+                selected: false,
+                inst_id,
+                name,
+                address: document.getElementById('address').value.trim(),
+                age_group: document.getElementById('age_group').value.trim(),
+                serving_type: document.getElementById('serving_type').value.trim(),
+                allergens: document.getElementById('allergens').value.trim(),
+                notes: document.getElementById('notes').value.trim(),
+                base_quantity: document.getElementById('base_quantity').value.trim(),
+                quantity: document.getElementById('quantity').value.trim(),
+                date: document.getElementById('date').value,
+                dish1: document.getElementById('dish1').value.trim(),
+                dish2: document.getElementById('dish2').value.trim(),
+                dish3: document.getElementById('dish3').value.trim()
+            };
+        }
+
+        // Add institute
+        function addInstitute() {
+            const data = collectFormData();
+            if (!data) return;
+
+            institutesData.push(data);
+            saveToLocalStorage();
+            renderTable();
+            clearForm();
+            showMessage('המוסד נשמר בהצלחה!', 'success');
+        }
+
+        // Update institute
+        function updateInstitute() {
+            if (selectedRow === null) {
+                showMessage('בחר שורה לעדכון', 'error');
+                return;
+            }
+
+            const data = collectFormData();
+            if (!data) return;
+
+            data.selected = institutesData[selectedRow].selected;
+            institutesData[selectedRow] = data;
+            saveToLocalStorage();
+            renderTable();
+            clearForm();
+            showMessage('השורה עודכנה בהצלחה!', 'success');
+        }
+
+        // Load selected row into form
+        function loadSelected() {
+            if (selectedRow === null) {
+                showMessage('בחר שורה לטעינה', 'error');
+                return;
+            }
+
+            const data = institutesData[selectedRow];
+            document.getElementById('inst_id').value = data.inst_id || '';
+            document.getElementById('name').value = data.name || '';
+            document.getElementById('address').value = data.address || '';
+            document.getElementById('age_group').value = data.age_group || '';
+            document.getElementById('serving_type').value = data.serving_type || '';
+            document.getElementById('allergens').value = data.allergens || '';
+            document.getElementById('notes').value = data.notes || '';
+            document.getElementById('base_quantity').value = data.base_quantity || '';
+            document.getElementById('quantity').value = data.quantity || '';
+            document.getElementById('date').value = data.date || '';
+            document.getElementById('dish1').value = data.dish1 || '';
+            document.getElementById('dish2').value = data.dish2 || '';
+            document.getElementById('dish3').value = data.dish3 || '';
+
+            showMessage('שורה נטענה לטופס', 'info');
+        }
+
+        // Render table
+        function renderTable() {
+            const tbody = document.getElementById('tableBody');
+            tbody.innerHTML = '';
+
+            institutesData.forEach((inst, index) => {
+                const tr = document.createElement('tr');
+                tr.onclick = (e) => {
+                    if (!e.target.classList.contains('checkbox-cell')) {
+                        selectRow(index);
+                    }
+                };
+
+                const checkbox = inst.selected ? '☑' : '☐';
+                tr.innerHTML = `
+                    <td class="checkbox-cell" onclick="toggleCheckbox(${index})">${checkbox}</td>
+                    <td>${inst.inst_id || ''}</td>
+                    <td>${inst.name || ''}</td>
+                    <td>${inst.address || ''}</td>
+                    <td>${inst.age_group || ''}</td>
+                    <td>${inst.serving_type || ''}</td>
+                    <td>${inst.allergens || ''}</td>
+                    <td>${inst.notes || ''}</td>
+                    <td>${inst.base_quantity || ''}</td>
+                    <td>${inst.quantity || ''}</td>
+                    <td>${inst.date || ''}</td>
+                    <td>${inst.dish1 || ''}</td>
+                    <td>${inst.dish2 || ''}</td>
+                    <td>${inst.dish3 || ''}</td>
+                `;
+
+                if (index === selectedRow) {
+                    tr.classList.add('selected');
+                }
+
+                tbody.appendChild(tr);
+            });
+        }
+
+        // Select row
+        function selectRow(index) {
+            selectedRow = index;
+            renderTable();
+        }
+
+        // Toggle checkbox
+        function toggleCheckbox(index) {
+            institutesData[index].selected = !institutesData[index].selected;
+            saveToLocalStorage();
+            renderTable();
+        }
+
+        // Toggle select all
+        function toggleSelectAll() {
+            allSelected = !allSelected;
+            institutesData.forEach(inst => inst.selected = allSelected);
+            saveToLocalStorage();
+            renderTable();
+            showMessage(allSelected ? 'כל השורות נבחרו' : 'כל השורות בוטלו', 'info');
+        }
+
+        // Refresh table
+        function refreshTable() {
+            renderTable();
+            showMessage('הטבלה רוענה', 'info');
+        }
+
+        // Save to localStorage
+        function saveToLocalStorage() {
+            localStorage.setItem('institutesData', JSON.stringify(institutesData));
+        }
+
+        // Load from localStorage
+        function loadFromLocalStorage() {
+            const stored = localStorage.getItem('institutesData');
+            if (stored) {
+                institutesData = JSON.parse(stored);
+                renderTable();
+            }
+        }
+
+        // Load Excel file
+        function loadExcelFile(event) {
+            const file = event.target.files[0];
+            if (!file) {
+                console.log('No file selected');
+                return;
+            }
+
+            console.log('Loading file:', file.name);
+            showMessage('טוען קובץ...', 'info');
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    const data = new Uint8Array(e.target.result);
+                    const workbook = XLSX.read(data, { type: 'array' });
+                    const firstSheet = workbook.Sheets[workbook.SheetNames[0]];
+                    const jsonData = XLSX.utils.sheet_to_json(firstSheet, { header: 1 });
+
+                    // Skip header row
+                    institutesData = [];
+                    for (let i = 1; i < jsonData.length; i++) {
+                        const row = jsonData[i];
+                        if (row.length > 0 && row[0]) {
+                            institutesData.push({
+                                selected: false,
+                                inst_id: row[0] || '',
+                                name: row[1] || '',
+                                address: row[2] || '',
+                                age_group: row[3] || '',
+                                serving_type: row[4] || '',
+                                allergens: row[5] || '',
+                                notes: row[6] || '',
+                                base_quantity: row[7] || '',
+                                quantity: row[8] || '',
+                                date: row[9] || '',
+                                dish1: row[10] || '',
+                                dish2: row[11] || '',
+                                dish3: row[12] || ''
+                            });
+                        }
+                    }
+
+                    saveToLocalStorage();
+                    renderTable();
+                    document.getElementById('quickGuide').style.display = 'none';
+                    showMessage(`נטענו ${institutesData.length} מוסדות מהקובץ`, 'success');
+                } catch (error) {
+                    showMessage('שגיאה בקריאת הקובץ: ' + error.message, 'error');
+                }
+            };
+            reader.readAsArrayBuffer(file);
+        }
+
+        // Export to Excel
+        function exportToExcel() {
+            if (institutesData.length === 0) {
+                showMessage('אין נתונים לייצוא', 'error');
+                return;
+            }
+
+            const headers = ['סמל מוסד', 'שם המוסד', 'כתובת', 'קבוצת גיל', 'סוג הגשה', 
+                           'אלרגני', 'הערות', 'כמות בסיס', 'כמות', 'תאריך', 
+                           'מנה 1', 'מנה 2', 'מנה 3'];
+
+            const wsData = [headers];
+            institutesData.forEach(inst => {
+                wsData.push([
+                    inst.inst_id, inst.name, inst.address, inst.age_group,
+                    inst.serving_type, inst.allergens, inst.notes, inst.base_quantity,
+                    inst.quantity, inst.date, inst.dish1, inst.dish2, inst.dish3
+                ]);
+            });
+
+            const wb = XLSX.utils.book_new();
+            const ws = XLSX.utils.aoa_to_sheet(wsData);
+            XLSX.utils.book_append_sheet(wb, ws, 'Institutes');
+
+            const today = new Date().toISOString().split('T')[0];
+            XLSX.writeFile(wb, `institutes_${today}.xlsx`);
+            showMessage('הקובץ יוצא בהצלחה!', 'success');
+        }
+
+        // Export selected to HTML for printing
+        function exportSelectedToHTML() {
+            const selected = institutesData.filter(inst => inst.selected);
+            if (selected.length === 0) {
+                showMessage('לא נבחרו מוסדות לייצוא', 'error');
+                return;
+            }
+
+            // Store selected data in localStorage for print page
+            localStorage.setItem('selectedForPrint', JSON.stringify(selected));
+            
+            // Open print page
+            window.open('print_flyers.html', '_blank');
+            showMessage(`${selected.length} מוסדות נבחרו להדפסה`, 'success');
+        }
+    </script>
+</body>
+</html>
+
