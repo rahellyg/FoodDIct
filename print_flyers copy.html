@@ -777,7 +777,7 @@
           <tr class="row3">
             <td class="column0">&nbsp;</td>
             <td class="column1 style3 s" style="font-size:37px">כתובת:</td>
-            <td class="column2 style3 s" style="font-size:37px">${(inst.address || '').substring(0, 9)}</td>
+            <td class="column2 style3 s" style="font-size:37px">${(inst.address || '').substring(0, 12)}</td>
             <td class="column3 style3 s" style="font-size:37px">&nbsp;קבוצת גיל:</td>
             <td class="column4 style4 s" style="font-size:37px">&nbsp;${inst.age_group || ''}</td>
             <td class="column5">&nbsp;</td>
@@ -787,10 +787,10 @@
           <tr class="row4">
             <td class="column0">&nbsp;</td>
             <td class="column1 style3 s" style="font-size:43px; ${inst.allergens > 0 ? 'color: #980000;' : ''}">שם מוסד:</td>
-            <td class="column2 style5 s style5" colspan="2" style="font-size:45px; overflow:visible; white-space:nowrap;">${(inst.name || '').substring(0, 15)}</td>
+            <td class="column2 style5 s style5" colspan="2" style="font-size:45px; overflow:visible; white-space:nowrap;">${inst.name || ''}</td>
             <td class="column4" rowspan="7"  style="position:relative; padding:0; width:220px; min-width:220px; max-width:220px;">
               <div style="position:relative; width:220px; height:240px;">
-                <img src="${inst.image_url || 'Picture1.png'}" alt="תמונה" style="position:absolute; top:-50px; left:0px; width:200px; height:240px; object-fit:contain;">
+                <img src="${inst.image_url || 'Picture1.png'}" alt="תמונה" style="position:absolute;  width:200px; height:240px; object-fit:contain;">
               </div>
             </td>
             <td class="column7">&nbsp;</td>
