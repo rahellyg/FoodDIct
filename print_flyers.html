@@ -10,11 +10,15 @@
             font-family: 'David', Calibri, Arial, Helvetica, sans-serif;
             font-size: 11pt;
             background-color: white;
-            direction: rtl
+            direction: rtl;
+            margin: 0;
+            padding: 0;
         }
 
         body {
-            direction: rtl
+            direction: rtl;
+            margin: 0;
+            padding: 0;
         }
 
         table {
@@ -43,7 +47,14 @@
 
         table {
             border-collapse: collapse;
-            page-break-after: always
+            margin: 0;
+            padding: 0;
+        }
+        
+        table td,
+        table th {
+            margin: 0;
+            padding: 0;
         }
 
         .gridlines td {
@@ -138,7 +149,7 @@
             border-right: none #000000;
             color: #000000;
             font-family: 'David';
-            font-size: 48pt;
+            font-size: 32px;
             background-color: white;
             white-space: nowrap;
         }
@@ -159,7 +170,7 @@
         }
 
         td.style3 {
-            vertical-align: right;
+            vertical-align: top;
             text-align: right;
             border-bottom: none #000000;
             border-top: none #000000;
@@ -167,13 +178,17 @@
             border-right: none #000000;
             color: #000000;
             font-family: 'David';
-            font-size: 26pt;
+            font-size: 24px;
             background-color: white;
             white-space: nowrap;
+            padding-top: 0;
+            padding-bottom: 0;
+           
+            margin: 0;
         }
 
         th.style3 {
-            vertical-align: right;
+            vertical-align: top;
             text-align: right;
             border-bottom: none #000000;
             border-top: none #000000;
@@ -181,8 +196,11 @@
             border-right: none #000000;
             color: #000000;
             font-family: 'David';
-            font-size: 26pt;
-            background-color: white
+            font-size: 30px;
+            background-color: white;
+            padding-top: 0;
+            padding-bottom: 0;
+            margin: 0;
         }
 
         td.style4 {
@@ -220,7 +238,6 @@
             border-top: none #000000;
             border-left: none #000000;
             border-right: none #000000;
-            font-weight: bold;
             color: #000000;
             font-family: 'David';
             font-size: 42pt;
@@ -275,7 +292,6 @@
             border-top: none #000000;
             border-left: none #000000;
             border-right: none #000000;
-            font-weight: bold;
             color: #000000;
             font-family: 'David';
             font-size: 28pt;
@@ -298,7 +314,7 @@
 
         td.style8 {
             vertical-align: middle;
-            text-align: center;
+            text-align: right;
             border-bottom: none #000000;
             border-top: none #000000;
             border-left: none #000000;
@@ -311,7 +327,7 @@
 
         th.style8 {
             vertical-align: middle;
-            text-align: center;
+            text-align: right;
             border-bottom: none #000000;
             border-top: none #000000;
             border-left: none #000000;
@@ -531,11 +547,11 @@
         }
 
         table.sheet0 tr.row1 {
-            height: 20pt
+            height: 45px
         }
 
         table.sheet0 tr.row2 {
-            height: 45pt
+            height: 34px
         }
 
         table.sheet0 tr.row3 {
@@ -543,7 +559,7 @@
         }
 
         table.sheet0 tr.row4 {
-            height: 55pt
+            height: 42px
         }
 
         table.sheet0 tr.row5 {
@@ -613,6 +629,91 @@
         /* Page break control - 2 flyers per page */
         table.sheet0 {
             page-break-after: always;
+            page-break-inside: avoid;
+        }
+        
+        /* Remove page break from last page to avoid empty page */
+        table.sheet0.no-page-break {
+            page-break-after: auto !important;
+        }
+        
+        @media print {
+            /* Ensure last table doesn't create empty page - use multiple approaches */
+            table.sheet0.no-page-break {
+                page-break-after: auto !important;
+                page-break-before: auto !important;
+                break-after: auto !important;
+            }
+            
+            /* Remove any trailing content that might cause empty page */
+            #content {
+                margin: 0 !important;
+                padding: 0 !important;
+            }
+            
+            #content > table:last-child,
+            #content > table.sheet0:last-child {
+                page-break-after: auto !important;
+                break-after: auto !important;
+                margin-bottom: 0 !important;
+                padding-bottom: 0 !important;
+            }
+            
+            /* Prevent body from adding extra space */
+            body {
+                margin-bottom: 0 !important;
+                padding-bottom: 0 !important;
+            }
+            
+            /* Reduce any default bottom spacing to minimum */
+            html {
+                padding: 0 !important;
+                margin: 0 !important;
+            }
+            
+            #content {
+                padding: 0 !important;
+                margin: 0 !important;
+            }
+            
+            /* Remove bottom spacing from last table and rows */
+            table.sheet0:last-child {
+                margin-bottom: 0 !important;
+                padding-bottom: 0 !important;
+            }
+            
+            table.sheet0:last-child tr:last-child {
+                margin-bottom: 0 !important;
+                padding-bottom: 0 !important;
+                height: auto !important;
+            }
+            
+            table.sheet0:last-child tr:last-child td {
+                margin-bottom: 0 !important;
+                padding-bottom: 0 !important;
+            }
+            
+            /* Reduce height of last row in last table to minimize bottom space */
+            table.sheet0:last-child tr.row20 {
+                height: 0pt !important;
+                min-height: 0 !important;
+                margin: 0 !important;
+                padding: 0 !important;
+            }
+            
+            table.sheet0:last-child tr.row20 td {
+                height: 0 !important;
+                min-height: 0 !important;
+                margin: 0 !important;
+                padding: 0 !important;
+                line-height: 0 !important;
+            }
+            
+            /* Ensure no orphaned content */
+            #content::after {
+                content: '';
+                display: none;
+            }
         }
 
         /* Screen controls */
@@ -661,21 +762,24 @@
             }
         }
 
-        /* Force rows 2 and 3 font-size to 24pt like in Excel export */
-        tr.row2 .style3,
-        tr.row2 .style4,
-        tr.row3 .style3,
+ 
         tr.row3 .style4 {
             font-size: 37px !important
         }
 
-        /* Add right-side spacing for first column and heading */
+        /* Remove padding to fit 2 institutes per page */
         td.column1,
         th.column1 {
-            padding-right: 35px !important;
+            padding-right: 0px !important;
         }
         tr.row1 td.column1 {
-            padding-right: 35px !important;
+            padding-right: 0px !important;
+        }
+        
+        /* Remove all padding from table cells */
+        table.sheet0 td,
+        table.sheet0 th {
+            padding: 0 !important;
         }
     </style>
 </head>
@@ -687,6 +791,13 @@
             margin-right: 0in;
             margin-top: 0in;
             margin-bottom: 0in;
+            size: A4;
+            padding: 0in;
+        }
+        
+        @page :last {
+            margin: 0in;
+            padding: 0in;
         }
 
         body {
@@ -725,16 +836,41 @@
 
             // Generate HTML for each page
             let html = '';
-            pages.forEach((pageData) => {
-                html += generatePage(pageData);
+            pages.forEach((pageData, index) => {
+                const isLastPage = index === pages.length - 1;
+                html += generatePage(pageData, isLastPage);
             });
 
             document.getElementById('content').innerHTML = html;
+            
+            // Ensure last table has no-page-break class and remove any trailing content
+            setTimeout(() => {
+                const contentDiv = document.getElementById('content');
+                const tables = contentDiv.querySelectorAll('table.sheet0');
+                if (tables.length > 0) {
+                    const lastTable = tables[tables.length - 1];
+                    lastTable.classList.add('no-page-break');
+                    // Remove any whitespace or content after last table
+                    let node = lastTable.nextSibling;
+                    while (node) {
+                        const next = node.nextSibling;
+                        if (node.nodeType === Node.TEXT_NODE) {
+                            if (node.textContent.trim() === '') {
+                                node.remove();
+                            }
+                        } else if (node.nodeType === Node.ELEMENT_NODE) {
+                            node.remove();
+                        }
+                        node = next;
+                    }
+                }
+            }, 0);
         };
 
-        function generatePage(institutes) {
+        function generatePage(institutes, isLastPage = false) {
             // One table = one A4 page with 2 flyers (like desktop app)
-            let html = '<table border="0" cellpadding="0" cellspacing="0" class="sheet0 gridlines">';
+            const pageBreakClass = isLastPage ? 'sheet0 gridlines no-page-break' : 'sheet0 gridlines';
+            let html = `<table border="0" cellpadding="0" cellspacing="0" class="${pageBreakClass}">`;
             html += '<col class="col0"><col class="col1"><col class="col2"><col class="col3"><col class="col4"><col class="col5"><col class="col6"><col class="col7">';
             html += '<tbody>';
 
@@ -754,68 +890,78 @@
 
         function generateFlyerRows(inst) {
             return `
-       
+          <tr class="row0">
+            <td class="column0">&nbsp;</td>
+            <td class="column1">&nbsp;</td>
+            <td class="column2">&nbsp;</td>
+            <td class="column3">&nbsp;</td>
+            <td class="column4">&nbsp;</td>
+            <td class="column5">&nbsp;</td>
+            <td class="column6">&nbsp;</td>
+            <td class="column7">&nbsp;</td>
+          </tr>
           <tr class="row1">
             <td class="column0">&nbsp;</td>
-            <td class="column1 style3 s style2" colspan="4"><span style="font-weight:bold; color:#C00000; font-family:'David'; font-size:43px">קייטרינג:</span>
-                <span style="font-weight:bold; color:#002060; font-family:'David'; font-size:43px">&quot;ישיבת מאיר בת עין&quot;    </span>
-                <span style="font-weight:bold; color:#000000; font-family:'David'; font-size:43px">&nbsp;&nbsp              טבריה</span></td>
+            <td class="column1 style3 s style2" colspan="4"><span style="font-weight:bold; color:#C00000; font-family:'David'; font-size:37px">קייטרינג:</span>
+                <span style="font-weight:bold; color:#002060; font-family:'David'; font-size:37px">&quot;ישיבת מאיר בת עין&quot;    </span>
+                <span style="font-weight:bold; color:#000000; font-family:'David'; font-size:37px">
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;                  טבריה</span></td>
             <td class="column5">&nbsp;</td>
             <td class="column6">&nbsp;</td>
             <td class="column7">&nbsp;</td>
           </tr>
           <tr class="row2">
             <td class="column0">&nbsp;</td>
-            <td class="column1 style3 s">סמל מוסד:</td>
-            <td class="column2 style3 n">${inst.inst_id || ''}</td>
-            <td class="column3 style3 s">טל מוקד:</td>
-            <td class="column4 style3 s">0732088557</td>
+            <td class="column1 style3 s"  style="font-family:'David';  font-size:29px">סמל מוסד:</td>
+            <td class="column2 style3 n" style="font-family:'David';  font-size:29px">${inst.inst_id || ''}</td>
+            <td class="column3 style3 s" style="font-family:'David';  font-size:29px">טל מוקד:</td>
+            <td class="column4 style3 s" style="font-family:'David';  font-size:29px">0732088557</td>
             <td class="column5">&nbsp;</td>
             <td class="column6">&nbsp;</td>
             <td class="column7">&nbsp;</td>
           </tr>
           <tr class="row3">
             <td class="column0">&nbsp;</td>
-            <td class="column1 style3 s" style="font-size:37px">כתובת:</td>
-            <td class="column2 style3 s" style="font-size:37px">${(inst.address || '').substring(0, 9)}</td>
-            <td class="column3 style3 s" style="font-size:37px">&nbsp;קבוצת גיל:</td>
-            <td class="column4 style4 s" style="font-size:37px">&nbsp;${inst.age_group || ''}</td>
+            <td class="column1 style3 s" style="font-family:'David';  font-size:29px">כתובת:</td>
+            <td class="column2 style3 s" style="font-family:'David';  font-size:29px">${(inst.address || '').substring(0, 9)}</td>
+            <td class="column3 style3 s" style="font-family:'David';  font-size:29px">&nbsp;קבוצת גיל:</td>
+            <td class="column4 style3 s" style="font-family:'David';  font-size:29px">&nbsp;${inst.age_group || ''}</td>
             <td class="column5">&nbsp;</td>
             <td class="column6">&nbsp;</td>
             <td class="column7">&nbsp;</td>
           </tr>
           <tr class="row4">
             <td class="column0">&nbsp;</td>
-            <td class="column1 style3 s" style="font-size:43px; ${inst.allergens > 0 ? 'color: #980000;' : ''}">שם מוסד:</td>
-            <td class="column2 style5 s style5" colspan="2" style="font-size:45px; overflow:visible; white-space:nowrap;">${(inst.name || '').substring(0, 15)}</td>
-            <td class="column4" rowspan="7"  style="position:relative; padding:0; width:220px; min-width:220px; max-width:220px;">
-              <div style="position:relative; width:220px; height:240px;">
-                <img src="${inst.image_url || 'Picture1.png'}" alt="תמונה" style="position:absolute; top:-50px; left:0px; width:200px; height:240px; object-fit:contain;">
+            <td class="column1 style5 s" style="font-family:'David'; font-size:37px; ${inst.allergens > 0 ? 'color: #980000;' : ''}">שם מוסד:</td>
+            <td class="column2 style5 s style5" colspan="2" style="font-size:45px;font-weight:bold; overflow:visible; white-space:nowrap;">${(inst.name || '').substring(0, 15)}</td>
+            <td class="column4" rowspan="7"  style="position:relative; padding:0; width:220px; min-width:220px; max-width:220px; vertical-align:top; overflow:visible;">
+              <div style="position:relative; width:220px; height:240px; margin:0; padding:10; overflow:visible;">
+                <img src="${inst.image_url || 'Picture1.png'}" alt="תמונה" style="position:absolute; top:-30px; left:-60px; width:200px; height:240px; object-fit:contain; display:block; margin:0;">
               </div>
             </td>
             <td class="column7">&nbsp;</td>
           </tr>
           <tr class="row5">
             <td class="column0">&nbsp;</td>
-            <td class="column1 style3 s" style="font-size:43px; ${inst.allergens > 0 ? 'color: #980000;' : ''}">סוג:</td>
-            <td class="column2 style7 s style7" colspan="2" style="font-size:43px; ${inst.allergens > 0 ? 'color: #980000;' : ''}">${inst.serving_type || ''}</td>
+            <td class="column1 style8 s" style="font-size:37px; ${inst.allergens > 0 ? 'color: #980000;' : ''}">סוג:</td>
+            <td class="column2 style8 s style7" colspan="2" style="font-size:37px; font-weight:bold; ${inst.allergens > 0 ? 'color: #980000;' : ''}">${inst.serving_type || ''}</td>
             <td class="column7">&nbsp;</td>
           </tr>
           <tr class="row6">
             <td class="column0">&nbsp;</td>
-            <td class="column1 style3 s" style="font-size:43px; ${inst.allergens > 0 ? 'color: #980000;' : ''}">אלרגני:</td>
-            <td class="column2 style8 s" style="font-size:43px; ${inst.allergens > 0 ? 'color: #980000;' : ''}">${inst.allergens || ''}</td>
+            <td class="column1 style8 s" style="font-size:37px; ${inst.allergens > 0 ? 'color: #980000;' : ''}">אלרגני:</td>
+            <td class="column2 style8 s" style="font-size:37px; font-weight:bold; ${inst.allergens > 0 ? 'color: #980000;' : ''}">${inst.allergens || '0'}</td>
             <td class="column7">&nbsp;</td>
           </tr>
           <tr class="row7">
             <td class="column0">&nbsp;</td>
-            <td class="column1 style3 s" style="font-size:43px; ${inst.allergens > 0 ? 'color: #980000;' : ''}" colspan="2">כמות מנות:</td>
+            <td class="column1 style3 s" style="font-size:37px; ${inst.allergens > 0 ? 'color: #980000;' : ''}" colspan="2">כמות מנות:</td>
             <td class="column7">&nbsp;</td>
           </tr>
           <tr class="row8">
             <td class="column0">&nbsp;</td>
-            <td class="column1 style11 s style11" rowspan="2" style="font-size:67px">${inst.quantity || ''}</td>
-            <td class="column2 style12 s style12" colspan="2" style="font-size:45px">${inst.dish1 || ''}</td>
+            <td class="column1 style11 s style11" rowspan="2" style="font-size:59px">${inst.quantity || ''}</td>
+            <td class="column2 style12 s style12" colspan="2" style="font-size:35px">${inst.dish1 || ''}</td>
             <td class="column4 style13 null"></td>
             <td class="column5">&nbsp;</td>
             <td class="column6">&nbsp;</td>
@@ -823,7 +969,7 @@
           </tr>
           <tr class="row9">
             <td class="column0">&nbsp;</td>
-            <td class="column2 style12 s style12" colspan="2" style="font-size:45px">${inst.dish2 || ''}</td>
+            <td class="column2 style12 s style12" colspan="2" style="font-size:35px">${inst.dish2 || ''}</td>
             <td class="column4 style13 null"></td>
             <td class="column5">&nbsp;</td>
             <td class="column6">&nbsp;</td>
@@ -831,8 +977,8 @@
           </tr>
           <tr class="row10">
             <td class="column0">&nbsp;</td>
-            <td class="column1 style14 s" style="font-size:37px">${inst.date || ''}</td>
-            <td class="column2 style12 s style12" colspan="2" style="font-size:45px">${inst.dish3 || ''}</td>
+            <td class="column1 style14 s" style="font-size:30px; font-weight:bold;">${inst.date || ''}</td>
+            <td class="column2 style12 s style12" colspan="2" style="font-size:35px">${inst.dish3 || ''}</td>
             <td class="column4 style13 null"></td>
             <td class="column5">&nbsp;</td>
             <td class="column6">&nbsp;</td>
