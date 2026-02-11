@@ -543,6 +543,13 @@
         }
 
         // Render table
+        // Display allergens without כן/לא and without comma - only the number(s)
+        function allergensDisplay(allergens) {
+            if (allergens == null || allergens === '') return '';
+            const s = String(allergens).replace(/\s*כן\s*/g, ' ').replace(/\s*לא\s*/g, ' ').replace(/,/g, ' ').replace(/\s+/g, ' ').trim();
+            return s;
+        }
+
         function renderTable() {
             const tbody = document.getElementById('tableBody');
             tbody.innerHTML = '';
@@ -571,7 +578,7 @@
                     <td>${inst.address || ''}</td>
                     <td>${inst.age_group || ''}</td>
                     <td>${inst.serving_type || ''}</td>
-                    <td>${inst.allergens || ''}</td>
+                    <td>${allergensDisplay(inst.allergens)}</td>
                     <td>${inst.notes || ''}</td>
                     <td>${inst.quantity || ''}</td>
                     <td style="font-weight: bold; color: ${deltaColor}">${deltaDisplay}</td>
@@ -712,7 +719,41 @@
                     
                     for (let i = 1; i < jsonData.length; i++) {
                         const row = jsonData[i];
-                        if (row.length > 0 && row[6]) {  // Check column G for inst_id
+                        if (row.length > 0 && row[7]) {  // Check column H for inst_id
+                            const currentInstId = (row[7] || '').toString().trim();
+                            const quantity = (row[18] || '').toString().trim();
+                            const nextRow = jsonData[i + 1];
+                            const nextInstId = nextRow && nextRow[7] ? (nextRow[7] || '').toString().trim() : '';
+                            const prevRow = jsonData[i - 1];
+                            const prevInstId = prevRow && prevRow[7] ? (prevRow[7] || '').toString().trim() : '';
+
+                            // Line with quantity 1 or 2: add to next or previous line's allergens, or log
+                            if (quantity === '1' || quantity === '2') {
+                                if (nextInstId === currentInstId) {
+                                    // Next line has same inst_id: skip this line (quantity will be added to next line's allergens when we process it)
+                                    continue;
+                                }
+                                if (prevInstId === currentInstId) {
+                                    // Previous line has same inst_id: add this quantity to the previous (already added) institute's allergens
+                                    const lastMatch = [...institutesData].reverse().find(inst => (inst.inst_id || '').toString().trim() === currentInstId);
+                                    if (lastMatch) {
+                                        lastMatch.allergens = lastMatch.allergens ? (lastMatch.allergens + ', ' + quantity) : quantity;
+                                    }
+                                    continue;
+                                }
+                                // Neither next nor previous has same inst_id
+                                console.log('Excel load: row with quantity ' + quantity + ' and inst_id ' + currentInstId + ' has no adjacent line with same inst_id (row index ' + (i + 1) + ')');
+                                continue;
+                            }
+
+                            let allergens = (row[17] || '').toString().trim();
+                            // If previous line has same inst_id and its quantity is 1 or 2, add that value to this line's allergens
+                            if (prevRow && prevRow.length > 0 && prevRow[7]) {
+                                const prevQuantity = (prevRow[18] || '').toString().trim();
+                                if (prevInstId === currentInstId && (prevQuantity === '1' || prevQuantity === '2')) {
+                                    allergens = allergens ? (allergens + ', ' + prevQuantity) : prevQuantity;
+                                }
+                            }
                             institutesData.push({
                                 selected: false,
                                 inst_id: row[7] || '',  // Column H
@@ -723,7 +764,7 @@
                                 notes: row[16] || '',  // Column R
                                 base_quantity: '0',  // Initialize to 0 until previous file is loaded
                                 quantity: row[18] || '',  // Column S
-                                allergens: row[17] || '', //column     U
+                                allergens: allergens,
                                 date: calculatedDate,  // Use calculated date as default
                                 dish1: '',  // Blank
                                 dish2: '',  // Blank
@@ -851,8 +892,9 @@
                 return;
             }
 
-            // Store selected data in localStorage for print page
-            localStorage.setItem('selectedForPrint', JSON.stringify(selected));
+            // Store selected data in localStorage for print page (allergens = display value, without כן/לא and comma)
+            const forPrint = selected.map(inst => ({ ...inst, allergens: allergensDisplay(inst.allergens) }));
+            localStorage.setItem('selectedForPrint', JSON.stringify(forPrint));
             
             // Open print page
             window.open('print_flyers.html', '_blank');
